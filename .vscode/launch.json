@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "name": "C#: 01-hello-world",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}\\01-hello-world\\01-hello-world.csproj"
+        },
+        {
+            "name": "C#: 02-conservation",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}\\02-conservation\\02-conservation.csproj"
+        }
+    ]
+}

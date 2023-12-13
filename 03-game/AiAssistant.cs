@@ -11,39 +11,45 @@ public class AiAssistant
         var apiKey = File.ReadAllText("../../../../OPENAITOKEN.txt");
         httpClient = new HttpClient { DefaultRequestHeaders = { Authorization = new AuthenticationHeaderValue("Bearer", apiKey) } };
     }
-    public string InitialPrompt { get; } = @"
-I want to play a round Tic-Tac-Toe.
-I'm X you are O. Make your move and evaluate if the game is over, and who the winner is. 
-Comment each move with in a funny comment to challenge me. Do your best to win the game!
+    public string InitialPrompt { get; } = @"I send you my move, and you answer with your turn by using the same data structure. 
 
-Respond only with a new data structure of the new state including your next move and comment.
+1. Always evaluate if there is a winner.
+2. Comment each move with in a funny comment to challenge me. 
+3. Do your best to win the game!
+
+My move:
 
 ```json
 %%REPLACE%% 
 ```
+
+Respond only in this json format, no other respond is allowed.
 ";
     private bool firstMove = true;
     public TicTacToeGame MakeNextMove(TicTacToeGame game)
     {
-        var prompt = "";
+     
         if (firstMove)
         {
             firstMove = false;
-            prompt = InitialPrompt.Replace("%%REPLACE%%", JsonConvert.SerializeObject(game));
+            
+            var prompt = InitialPrompt.Replace("%%REPLACE%%", JsonConvert.SerializeObject(game));
+            messagesStorage.Add(new Message { Role = "system", Content = "Let us play a game of tic-tac-toe. You, the human, are `X` and I, the AI, am `O`." });
+            messagesStorage.Add(new Message { Role = "user", Content = prompt });
         }
         else
         {
-            prompt = JsonConvert.SerializeObject(game);
+               var prompt = JsonConvert.SerializeObject(game);
+            messagesStorage.Add(new Message { Role = "user", Content = prompt });
         }
 
-        game = GetNextGameStateFromOpenAIApi(prompt, game);
+        game = GetNextGameStateFromOpenAIApi(game);
 
         return game;
     }
 
-    private TicTacToeGame GetNextGameStateFromOpenAIApi(string prompt, TicTacToeGame game)
+    private TicTacToeGame GetNextGameStateFromOpenAIApi(TicTacToeGame game)
     {
-        messagesStorage.Add(new Message { Role = "user", Content = prompt });
         var chatSession = new ChatSession { Messages = messagesStorage };
 
         var json = JsonConvert.SerializeObject(chatSession);

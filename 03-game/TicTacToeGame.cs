@@ -4,10 +4,10 @@ public class TicTacToeGame
 {
     [JsonProperty("board")]
     public string[][] Board { get; set; }
-    
+
     [JsonProperty("winner")]
     public string Winner { get; set; }
-    
+
     [JsonProperty("comment")]
     public string Comment { get; set; }
 
@@ -25,7 +25,7 @@ public class TicTacToeGame
 
     public void PrintBoardWithCoordinates()
     {
-        Console.WriteLine("  0 1 2");
+        Console.WriteLine("  012");
         for (int i = 0; i < Board.Length; i++)
         {
             // Print the row number
@@ -36,34 +36,29 @@ public class TicTacToeGame
                 var field = Board[i][j];
                 if (field == "")
                 {
-                    field = " ";
+                    field = "-";
                 }
 
                 Console.Write(field);
-
-                // Print column separators or end-of-line
-                if (j < Board[i].Length - 1)
-                {
-                    Console.Write("|");
-                }
             }
             Console.WriteLine();
-
-            // Print row separators
-            if (i < Board.Length - 1)
-            {
-                Console.WriteLine("  -----");
-            }
         }
     }
 
     public bool UpdateBoard(string input, string symbol)
     {
         var coordinates = input.Split(",");
-        var row = int.Parse(coordinates[0]);
-        var column = int.Parse(coordinates[1]);
+        if (coordinates.Length != 2)
+        {
+            return false;
+        }
 
-        return UpdateBoard(row, column, "X");
+        if (!int.TryParse(coordinates[0], out int row) || !int.TryParse(coordinates[1], out int column))
+        {
+            return false;
+        }
+
+        return UpdateBoard(row, column, symbol);
     }
     public bool UpdateBoard(int row, int column, string symbol)
     {

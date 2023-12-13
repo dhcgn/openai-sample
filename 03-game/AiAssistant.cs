@@ -14,7 +14,7 @@ public class AiAssistant
     public string InitialPrompt { get; } = @"
 I want to play a round Tic-Tac-Toe.
 I'm X you are O. Make your move and evaluate if the game is over, and who the winner is. 
-Comment each move with in a funny comment. Do your best to win the game.
+Comment each move with in a funny comment to challenge me. Do your best to win the game!
 
 Respond only with a new data structure of the new state including your next move and comment.
 

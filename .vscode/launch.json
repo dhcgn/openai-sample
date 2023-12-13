@@ -11,6 +11,12 @@
             "type": "dotnet",
             "request": "launch",
             "projectPath": "${workspaceFolder}\\02-conservation\\02-conservation.csproj"
+        },
+        {
+            "name": "C#: 03-game",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}\\03-game\\03-game.csproj"
         }
     ]
 }
